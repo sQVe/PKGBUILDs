@@ -1,0 +1,7 @@
+post_install() {
+  sudo useradd -r -U -d "/opt/sentinelone/home" -s "/usr/bin/nologin" "sentinelone"
+}
+
+post_remove() {
+  userdel sentinelone
+}

@@ -1,0 +1,26 @@
+pkgname=sentinelone
+pkgver=22_1_1_4
+pkgrel=1
+pkgdesc="SentinelOne"
+arch=('x86_64')
+source=("./SentinelAgent_linux_v${pkgver}.deb")
+sha256sums=('SKIP')
+install=sentinelone.install
+
+package() {
+  cd "${srcdir}"
+
+  # Extract compressed data archive.
+  tar  -xf data.tar.xz -C "${pkgdir}"
+
+  # Symlink binary.
+  mkdir -p "${pkgdir}/usr/bin"
+  ln -sf /opt/sentinelone/bin/sentinelctl "${pkgdir}/usr/bin/sentinelctl"
+
+  # Symlink service.
+  mkdir -p "${pkgdir}/usr/lib/systemd/system"
+  ln -sf /opt/sentinelone/configuration/sentinelone.service "${pkgdir}/usr/lib/systemd/system/sentinelone.service"
+
+  # Fix binary permissions.
+  chmod -R 755 "${pkgdir}/opt/sentinelone/bin"
+}
